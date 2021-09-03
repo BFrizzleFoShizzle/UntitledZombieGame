@@ -6,6 +6,10 @@ extends RigidBody
 # var b = "text"
 const accel = 2000.0
 const maxSpeed = 3.0
+var damage = 25.0
+
+const Enemy = preload("res://Enemy.gd")
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -23,7 +27,19 @@ func get_input_direction():
 		0.0,
 		Input.get_action_strength("ui_down") - Input.get_action_strength("ui_up")
 	)
-	
+
+func _input(event):
+	if event is InputEventMouseButton:
+		if event.button_index  == 1 && event.pressed == true:
+			var rayOrigin = global_transform.origin + Vector3(0.0, 0.2, 0.0)
+			print(rayOrigin)
+			var result = get_world().direct_space_state.intersect_ray(rayOrigin, rayOrigin + Vector3(10, 0, 0), [self])
+			if result:
+				if result.collider is Enemy:
+					print("Enemy hit!")
+					result.collider.take_damage(damage)
+				#print("Hit at point: ", result.position, result.collider,  result.collider is Enemy, result.collider.get_script(), result.collider.get_script() is Enemy, result.collider_id)
+
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	#translate(get_input_direction() * delta * speed)

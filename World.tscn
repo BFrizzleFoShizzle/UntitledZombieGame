@@ -1,6 +1,7 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://Player.gd" type="Script" id=1]
+[ext_resource path="res://World.gd" type="Script" id=3]
 
 [sub_resource type="PhysicsMaterial" id=7]
 
@@ -24,6 +25,7 @@ extents = Vector3( 0.5, 0.5, 0.5 )
 [sub_resource type="BoxShape" id=8]
 
 [node name="World" type="Spatial"]
+script = ExtResource( 3 )
 
 [node name="Camera" type="Camera" parent="."]
 transform = Transform( 1, 0, 0, 0, 0.890118, 0.455731, 0, -0.455731, 0.890118, -0.0990918, 6.10096, 8.68376 )
@@ -31,10 +33,10 @@ keep_aspect = 0
 fov = 65.0
 
 [node name="Player" type="Spatial" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4.83518, 0.8, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4.835, 1, 0 )
 
 [node name="RigidBody" type="RigidBody" parent="Player"]
-transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -0.0384531, 0.29539, -0.0606029 )
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -0.038, 0, -0.061 )
 physics_material_override = SubResource( 7 )
 axis_lock_linear_y = true
 axis_lock_angular_x = true
@@ -44,6 +46,7 @@ linear_damp = 5.0
 script = ExtResource( 1 )
 
 [node name="CollisionShape" type="CollisionShape" parent="Player/RigidBody"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0855103, 0.0514526, 0.0649014 )
 shape = SubResource( 4 )
 
 [node name="MeshInstance" type="MeshInstance" parent="Player/RigidBody"]
@@ -189,7 +192,7 @@ transform = Transform( 7.5, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -4 )
 shape = SubResource( 8 )
 
 [node name="CollisionShape3" type="CollisionShape" parent="Terrain/Bounds"]
-transform = Transform( 7.5, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 4 )
+transform = Transform( 7.5, 0, 0, 0, 1, 0, 0, 0, 0.5, 0, 0, 4 )
 shape = SubResource( 8 )
 
 [node name="DirectionalLight" type="DirectionalLight" parent="."]
