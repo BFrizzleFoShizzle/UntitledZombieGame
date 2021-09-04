@@ -11,6 +11,7 @@ const attackKnockback = 200.0
 
 const Enemy = preload("res://Enemy.gd")
 const GunSound = preload("res://PlayerGunSound.tscn")
+onready var playerGun = get_node("PlayerGun")
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -34,26 +35,31 @@ func play_gunshot():
 	add_child(gunSound)
 
 func _input(event):
-	if event is InputEventMouseButton:
-		if event.button_index  == 1 && event.pressed == true:
-			play_gunshot()
+	if event is InputEventMouse:
+		# update gun position
+		# TODO refactor
+		var rayOrigin = global_transform.origin + Vector3(0.0, 0.2, 0.0)
+		
+		var camera = get_viewport().get_camera()
+		var pixelRayOrigin = camera.project_ray_origin(event.position)
+		var pixelRayDir = camera.project_ray_normal(event.position)
+		var pixelResult = get_world().direct_space_state.intersect_ray(pixelRayOrigin, pixelRayOrigin + pixelRayDir * 200.0, [], 2147483647, false, true)
+		if pixelResult:	
+			# look at target
+			var rayTarget = pixelResult.position
+			var rayDir = (rayTarget - rayOrigin).normalized()
+			rayDir = Vector3(rayDir.x, 0.0, rayDir.z)
+			var gunPos = rayOrigin + rayDir
+			playerGun.global_transform.origin = gunPos
+			playerGun.look_at(gunPos + rayDir, Vector3(0.0, 1.0, 0.0))
 			
-			var rayOrigin = global_transform.origin + Vector3(0.0, 0.2, 0.0)
-			
-			var camera = get_viewport().get_camera()
-			var pixelRayOrigin = camera.project_ray_origin(event.position)
-			var pixelRayDir = camera.project_ray_normal(event.position)
-			var pixelResult = get_world().direct_space_state.intersect_ray(pixelRayOrigin, pixelRayOrigin + pixelRayDir * 200.0, [], 2147483647, false, true)
-			#if pixelResult:
-			#	print("Hit at point: ", pixelResult.position, pixelResult.collider)
-			if pixelResult:	
-				var rayTarget = pixelResult.position
-				var rayDir = (rayTarget - rayOrigin)
-				rayDir = Vector3(rayDir.x, 0.0, rayDir.z);
+			if event is InputEventMouseButton && event.button_index  == 1 && event.pressed == true:
+				# gunshot
+				play_gunshot()
 				var rayEnd = rayOrigin + rayDir*20.0
-				var result = get_world().direct_space_state.intersect_ray(rayOrigin, rayEnd, [self])
+				var result = get_world().direct_space_state.intersect_ray(gunPos, rayEnd, [self])
 				if result:
-					get_node("/root/World/RayDraw").queue_ray(rayOrigin, result.position)
+					get_node("/root/World/RayDraw3D").queue_ray(gunPos, result.position)
 					if result.collider is Enemy:
 						#print("Enemy hit!")
 						result.collider.take_damage(damage)
@@ -62,7 +68,7 @@ func _input(event):
 						result.collider.add_force(rayDir.normalized() * attackKnockback, Vector3(0.0, 0.0, 0.0))
 				else:
 					# Miss
-					get_node("/root/World/RayDraw").queue_ray(rayOrigin, rayEnd)
+					get_node("/root/World/RayDraw").queue_ray(gunPos, rayEnd)
 					#print("Hit at point: ", result.position, result.collider,  result.collider is Enemy, result.collider.get_script(), result.collider.get_script() is Enemy, result.collider_id)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

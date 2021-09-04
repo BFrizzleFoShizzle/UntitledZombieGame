@@ -13,7 +13,7 @@ func _ready():
 	# change it back here
 	stream.loop_begin = 381405
 	stream.loop_end = 1144216
-	play(20.0)
+	#play(20.0)
 	pass # Replace with function body.
 
 
