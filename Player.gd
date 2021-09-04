@@ -68,7 +68,8 @@ func _input(event):
 				casingMoveDir += Vector3(0.0,1.0,0.0) * rand_range(-0.1, 0.1)
 				casingMoveDir += rayDir * rand_range(-0.1, 0.1)
 				casingMoveDir = casingMoveDir.normalized()
-				casing.add_force(rand_range(shellEjectForceMin, shellEjectForceMax) * casingMoveDir, Vector3(0,0,0))
+				var forceOrigin = Vector3(rand_range(-0.1,0.1), rand_range(-0.1,0.1), rand_range(-0.1,0.1))
+				casing.add_force(rand_range(shellEjectForceMin, shellEjectForceMax) * casingMoveDir, forceOrigin)
 				
 				var rayEnd = rayOrigin + rayDir*20.0
 				var result = get_world().direct_space_state.intersect_ray(gunPos, rayEnd, [self])

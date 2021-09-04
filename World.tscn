@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=2]
+[gd_scene load_steps=22 format=2]
 
 [ext_resource path="res://Player.gd" type="Script" id=1]
 [ext_resource path="res://RayDraw.gd" type="Script" id=2]
@@ -6,6 +6,7 @@
 [ext_resource path="res://main-2.wav" type="AudioStream" id=4]
 [ext_resource path="res://MusicLoop.gd" type="Script" id=5]
 [ext_resource path="res://RayDraw3D.gd" type="Script" id=6]
+[ext_resource path="res://Images/HP1.png" type="Texture" id=7]
 
 [sub_resource type="PhysicsMaterial" id=1]
 
@@ -46,6 +47,42 @@ size = Vector3( 10, 0.2, 10 )
 
 [node name="World" type="Spatial"]
 script = ExtResource( 3 )
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 20.0
+margin_top = 20.0
+margin_right = 20.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
+margin_right = 92.0
+margin_bottom = 64.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+
+[node name="HPTexture" type="TextureRect" parent="MarginContainer/HBoxContainer"]
+margin_right = 64.0
+margin_bottom = 64.0
+rect_min_size = Vector2( 64, 64 )
+size_flags_horizontal = 5
+size_flags_vertical = 5
+texture = ExtResource( 7 )
+expand = true
+stretch_mode = 5
+
+[node name="HealthText" type="Label" parent="MarginContainer/HBoxContainer"]
+margin_left = 68.0
+margin_top = 25.0
+margin_right = 92.0
+margin_bottom = 39.0
+size_flags_horizontal = 2
+size_flags_vertical = 6
+text = "100"
+valign = 1
 
 [node name="Camera" type="Camera" parent="."]
 transform = Transform( 1, 0, 0, 0, 0.890118, 0.455731, 0, -0.455731, 0.890118, -0.0990918, 6.10096, 8.68376 )
