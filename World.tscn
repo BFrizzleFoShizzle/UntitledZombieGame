@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=2]
+[gd_scene load_steps=23 format=2]
 
 [ext_resource path="res://Player.gd" type="Script" id=1]
 [ext_resource path="res://RayDraw.gd" type="Script" id=2]
@@ -7,6 +7,7 @@
 [ext_resource path="res://MusicLoop.gd" type="Script" id=5]
 [ext_resource path="res://RayDraw3D.gd" type="Script" id=6]
 [ext_resource path="res://Images/HP1.png" type="Texture" id=7]
+[ext_resource path="res://MuzzleFlashLight.gd" type="Script" id=8]
 
 [sub_resource type="PhysicsMaterial" id=1]
 
@@ -115,13 +116,27 @@ transform = Transform( 1.91069e-15, -4.37114e-08, -1, -1, -4.37114e-08, 0, -4.37
 
 [node name="Barrel" type="MeshInstance" parent="Player/RigidBody/PlayerGun"]
 transform = Transform( -4.37114e-08, -1, -4.37114e-08, 0, -4.37114e-08, 1, -1, 4.37114e-08, 1.91069e-15, 0, 0, 0 )
+layers = 2
+cast_shadow = 0
+use_in_baked_light = true
 mesh = SubResource( 4 )
 material/0 = null
 
 [node name="MeshInstance" type="MeshInstance" parent="Player/RigidBody/PlayerGun/Barrel"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.1, 0, -0.1 )
+layers = 2
+cast_shadow = 0
 mesh = SubResource( 5 )
 material/0 = null
+
+[node name="Flash" type="OmniLight" parent="Player/RigidBody/PlayerGun"]
+transform = Transform( 1, 0, 0, 0, 1, -2.03644e-29, 0, -2.03644e-29, 1, 0, 0, -0.196 )
+visible = false
+light_color = Color( 0.952941, 0.917647, 0.827451, 1 )
+light_energy = 0.2
+shadow_enabled = true
+omni_range = 10.0
+script = ExtResource( 8 )
 
 [node name="Terrain" type="Spatial" parent="."]
 
@@ -273,7 +288,7 @@ shape = SubResource( 11 )
 [node name="DirectionalLight" type="DirectionalLight" parent="."]
 transform = Transform( 0.820092, 0.0312924, 0.571375, -0.41043, 0.727944, 0.549222, -0.398743, -0.684922, 0.609825, 0, 2.64186, 0 )
 light_color = Color( 1, 0.972549, 0.831373, 1 )
-light_energy = 0.8
+light_energy = 0.4
 shadow_enabled = true
 
 [node name="RayDraw3D" type="ImmediateGeometry" parent="."]

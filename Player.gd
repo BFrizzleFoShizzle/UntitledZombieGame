@@ -15,6 +15,7 @@ const Enemy = preload("res://Enemy.gd")
 const Casing = preload("res://Casing.tscn")
 const GunSound = preload("res://PlayerGunSound.tscn")
 onready var playerGun = get_node("PlayerGun")
+onready var muzzleFlashLight = get_node("PlayerGun/Flash")
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -59,6 +60,7 @@ func _input(event):
 			if event is InputEventMouseButton && event.button_index  == 1 && event.pressed == true:
 				# gunshot
 				play_gunshot()
+				muzzleFlashLight.flash()
 				
 				# Create casing
 				var casing = Casing.instance()

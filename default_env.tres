@@ -10,3 +10,4 @@ sun_longitude = -16.75
 [resource]
 background_mode = 2
 background_sky = SubResource( 1 )
+background_energy = 0.6
