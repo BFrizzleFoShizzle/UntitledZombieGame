@@ -16,6 +16,7 @@ const Casing = preload("res://Casing.tscn")
 const GunSound = preload("res://PlayerGunSound.tscn")
 onready var playerGun = get_node("PlayerGun")
 onready var muzzleFlashLight = get_node("PlayerGun/Flash")
+onready var rayDrawer = get_node("../../RayDraw3D")
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -64,7 +65,7 @@ func _input(event):
 				
 				# Create casing
 				var casing = Casing.instance()
-				get_node("/root/World").add_child(casing)
+				get_node("/root/World/GameWorld").add_child(casing)
 				casing.global_transform.origin = gunPos
 				var casingMoveDir = rayDir.cross(Vector3(0.0,1.0,0.0))
 				casingMoveDir += Vector3(0.0,1.0,0.0) * rand_range(-0.1, 0.1)
@@ -76,7 +77,7 @@ func _input(event):
 				var rayEnd = rayOrigin + rayDir*20.0
 				var result = get_world().direct_space_state.intersect_ray(gunPos, rayEnd, [self])
 				if result:
-					get_node("/root/World/RayDraw3D").queue_ray(gunPos, result.position)
+					rayDrawer.queue_ray(gunPos, result.position)
 					if result.collider is Enemy:
 						#print("Enemy hit!")
 						result.collider.take_damage(damage)
@@ -85,7 +86,7 @@ func _input(event):
 						result.collider.add_force(rayDir.normalized() * attackKnockback, Vector3(0.0, 0.0, 0.0))
 				else:
 					# Miss
-					get_node("/root/World/RayDraw").queue_ray(gunPos, rayEnd)
+					rayDrawer.queue_ray(gunPos, rayEnd)
 					#print("Hit at point: ", result.position, result.collider,  result.collider is Enemy, result.collider.get_script(), result.collider.get_script() is Enemy, result.collider_id)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

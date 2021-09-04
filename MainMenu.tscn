@@ -1,0 +1,149 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://Images/Title.png" type="Texture" id=1]
+[ext_resource path="res://SceneChangeButton.gd" type="Script" id=2]
+[ext_resource path="res://ShowMenuButton.gd" type="Script" id=3]
+[ext_resource path="res://CloseButton.gd" type="Script" id=4]
+[ext_resource path="res://ClickableText.gd" type="Script" id=5]
+[ext_resource path="res://Images/Tutorial.png" type="Texture" id=6]
+
+[node name="MainMenu" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Background" type="TextureRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource( 1 )
+expand = true
+stretch_mode = 6
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+anchor_left = 0.4
+anchor_top = 0.4
+anchor_right = 0.6
+anchor_bottom = 0.6
+margin_right = 40.0
+margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PlayButton" type="Button" parent="VBoxContainer"]
+margin_right = 296.0
+margin_bottom = 64.0
+rect_min_size = Vector2( 256, 64 )
+text = "Play"
+script = ExtResource( 2 )
+scene_name = "res://World.tscn"
+
+[node name="InstructionsButton" type="Button" parent="VBoxContainer"]
+margin_top = 68.0
+margin_right = 296.0
+margin_bottom = 132.0
+rect_min_size = Vector2( 256, 64 )
+text = "Instructions"
+script = ExtResource( 3 )
+menuPath = NodePath("../../InstructionsImage")
+
+[node name="OptionsButton" type="Button" parent="VBoxContainer"]
+margin_top = 136.0
+margin_right = 296.0
+margin_bottom = 200.0
+rect_min_size = Vector2( 256, 64 )
+text = "Options"
+
+[node name="CreditsButton" type="Button" parent="VBoxContainer"]
+margin_top = 204.0
+margin_right = 296.0
+margin_bottom = 268.0
+rect_min_size = Vector2( 256, 64 )
+text = "Credits"
+script = ExtResource( 3 )
+menuPath = NodePath("../../Credits")
+
+[node name="Credits" type="MarginContainer" parent="."]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 50.0
+margin_top = 50.0
+margin_right = -50.0
+margin_bottom = -50.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CreditsPanel" type="Panel" parent="Credits"]
+margin_right = 1180.0
+margin_bottom = 620.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MarginContainer" type="MarginContainer" parent="Credits/CreditsPanel"]
+anchor_top = 0.3
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 20.0
+margin_right = -20.0
+margin_bottom = -20.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Credits/CreditsPanel/MarginContainer"]
+margin_right = 1140.0
+margin_bottom = 414.0
+bbcode_enabled = true
+bbcode_text = "[center]
+Credits:
+
+Programming + music + SFX + art: Bryden Frizzell
+Gunshot SFX adapted from: [url=https://soundbible.com/2123-40-Smith-Wesson-8x.html]Mike Koenig[/url][/center]"
+text = "
+Credits:
+
+Programming + music + SFX + art: Bryden Frizzell
+Gunshot SFX adapted from: Mike Koenig"
+script = ExtResource( 5 )
+
+[node name="CloseBtn" type="Button" parent="Credits/CreditsPanel"]
+anchor_left = 0.4
+anchor_top = 0.85
+anchor_right = 0.6
+anchor_bottom = 0.9
+margin_right = 12.0
+margin_bottom = 20.0
+text = "Close"
+script = ExtResource( 4 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+menuPath = NodePath("../..")
+
+[node name="InstructionsImage" type="TextureRect" parent="."]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource( 6 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CloseButton" type="Button" parent="InstructionsImage"]
+anchor_left = 0.8
+anchor_top = 0.85
+anchor_right = 0.9
+anchor_bottom = 0.9
+margin_right = 12.0
+margin_bottom = 20.0
+text = "Close"
+script = ExtResource( 4 )
+menuPath = NodePath("..")

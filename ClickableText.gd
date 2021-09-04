@@ -1,4 +1,4 @@
-extends AudioStreamPlayer
+extends RichTextLabel
 
 
 # Declare member variables here. Examples:
@@ -8,14 +8,11 @@ extends AudioStreamPlayer
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	#print(stream.loop_begin)
-	# HACK value from import settings overrides the value in our scene, so we 
-	# change it back here
-	stream.loop_begin = 381405
-	stream.loop_end = 1144216
-	play()
+	connect("meta_clicked", self, "meta_clicked"); 
 	pass # Replace with function body.
 
+func meta_clicked(meta): 
+	OS.shell_open(meta);
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):

@@ -10,6 +10,19 @@ const SpawnRandomDir = Vector3(0.0, 0.0, 5.0)
 var currSpawnTime = 0.0
 var EnemyInst = load("res://Enemy.tscn")
 
+var wallHealth = 100.0
+
+onready var healthText = find_node("HealthText")
+onready var gameWorld = get_node("GameWorld")
+
+func damage_wall(damage):
+	wallHealth -= damage
+	wallHealth = max(wallHealth, 0.0)
+	$GameUI/HBoxContainer/HealthText.text = str(wallHealth)
+	if wallHealth == 0.0:
+		gameWorld.get_tree().paused = true
+		$GameOverUI.visible = true
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	randomize()
@@ -23,5 +36,5 @@ func _process(delta):
 		currSpawnTime -= SpawnTime
 		var newEnemy = EnemyInst.instance()
 		newEnemy.translation = SpawnOrigin + SpawnRandomDir * rand_range(0.0, 1.0)
-		add_child(newEnemy)
+		gameWorld.add_child(newEnemy)
 	pass
