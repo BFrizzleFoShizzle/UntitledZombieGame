@@ -206,6 +206,7 @@ shape = SubResource( 8 )
 transform = Transform( 15, 0, 0, 0, -3.49691e-07, 1, 0, -8, -4.37114e-08, 0, 0, 0 )
 
 [node name="FloorMesh" type="MeshInstance" parent="Terrain/Floor"]
+transform = Transform( 1, 0, 0, 0, 1, -4.44089e-16, 0, 0, 1, 0, 0, 0 )
 use_in_baked_light = true
 mesh = SubResource( 9 )
 material/0 = null

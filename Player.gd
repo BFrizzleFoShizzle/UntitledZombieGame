@@ -8,8 +8,11 @@ const accel = 2000.0
 const maxSpeed = 3.0
 var damage = 25.0
 const attackKnockback = 200.0
+const shellEjectForceMin = 250.0
+const shellEjectForceMax = 350.0
 
 const Enemy = preload("res://Enemy.gd")
+const Casing = preload("res://Casing.tscn")
 const GunSound = preload("res://PlayerGunSound.tscn")
 onready var playerGun = get_node("PlayerGun")
 
@@ -56,6 +59,17 @@ func _input(event):
 			if event is InputEventMouseButton && event.button_index  == 1 && event.pressed == true:
 				# gunshot
 				play_gunshot()
+				
+				# Create casing
+				var casing = Casing.instance()
+				get_node("/root/World").add_child(casing)
+				casing.global_transform.origin = gunPos
+				var casingMoveDir = rayDir.cross(Vector3(0.0,1.0,0.0))
+				casingMoveDir += Vector3(0.0,1.0,0.0) * rand_range(-0.1, 0.1)
+				casingMoveDir += rayDir * rand_range(-0.1, 0.1)
+				casingMoveDir = casingMoveDir.normalized()
+				casing.add_force(rand_range(shellEjectForceMin, shellEjectForceMax) * casingMoveDir, Vector3(0,0,0))
+				
 				var rayEnd = rayOrigin + rayDir*20.0
 				var result = get_world().direct_space_state.intersect_ray(gunPos, rayEnd, [self])
 				if result:
