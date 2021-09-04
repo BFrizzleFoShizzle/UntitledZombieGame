@@ -106,12 +106,14 @@ bbcode_text = "[center]
 Credits:
 
 Programming + music + SFX + art: Bryden Frizzell
-Gunshot SFX adapted from: [url=https://soundbible.com/2123-40-Smith-Wesson-8x.html]Mike Koenig[/url][/center]"
+Gunshot SFX adapted from: [url=https://soundbible.com/2123-40-Smith-Wesson-8x.html]Mike Koenig \"40 Smith Wesson 8x\"[/url] [url=http://creativecommons.org/licenses/by/3.0/legalcode]CC-BY-3.0[/url][/center]
+"
 text = "
 Credits:
 
 Programming + music + SFX + art: Bryden Frizzell
-Gunshot SFX adapted from: Mike Koenig"
+Gunshot SFX adapted from: Mike Koenig \"40 Smith Wesson 8x\" CC-BY-3.0
+"
 script = ExtResource( 5 )
 
 [node name="CloseBtn" type="Button" parent="Credits/CreditsPanel"]
