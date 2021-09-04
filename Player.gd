@@ -7,9 +7,10 @@ extends RigidBody
 const accel = 2000.0
 const maxSpeed = 3.0
 var damage = 25.0
+const attackKnockback = 200.0
 
 const Enemy = preload("res://Enemy.gd")
-
+const GunSound = preload("res://PlayerGunSound.tscn")
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -27,10 +28,16 @@ func get_input_direction():
 		0.0,
 		Input.get_action_strength("ui_down") - Input.get_action_strength("ui_up")
 	)
+	
+func play_gunshot():
+	var gunSound = GunSound.instance()
+	add_child(gunSound)
 
 func _input(event):
 	if event is InputEventMouseButton:
 		if event.button_index  == 1 && event.pressed == true:
+			play_gunshot()
+			
 			var rayOrigin = global_transform.origin + Vector3(0.0, 0.2, 0.0)
 			
 			var camera = get_viewport().get_camera()
@@ -50,6 +57,9 @@ func _input(event):
 					if result.collider is Enemy:
 						#print("Enemy hit!")
 						result.collider.take_damage(damage)
+						# knockback
+						#result.collider.add_force(Vector3(1.0, 0.0, 0.0) * attackKnockback, Vector3(0.0, 0.0, 0.0))
+						result.collider.add_force(rayDir.normalized() * attackKnockback, Vector3(0.0, 0.0, 0.0))
 				else:
 					# Miss
 					get_node("/root/World/RayDraw").queue_ray(rayOrigin, rayEnd)
