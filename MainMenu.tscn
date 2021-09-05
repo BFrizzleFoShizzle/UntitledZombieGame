@@ -69,7 +69,6 @@ script = ExtResource( 3 )
 menuPath = NodePath("../../Credits")
 
 [node name="Credits" type="MarginContainer" parent="."]
-visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 50.0
@@ -106,13 +105,15 @@ bbcode_text = "[center]
 Credits:
 
 Programming + music + SFX + art: Bryden Frizzell
-Gunshot SFX adapted from: [url=https://soundbible.com/2123-40-Smith-Wesson-8x.html]Mike Koenig \"40 Smith Wesson 8x\"[/url] [url=http://creativecommons.org/licenses/by/3.0/legalcode]CC-BY-3.0[/url][/center]
+Gunshot SFX adapted from: [url=https://soundbible.com/2123-40-Smith-Wesson-8x.html]Mike Koenig \"40 Smith Wesson 8x\"[/url] [url=http://creativecommons.org/licenses/by/3.0/legalcode]CC-BY-3.0[/url]
+Mannequiny: [url=https://godotengine.org/asset-library/asset/440]gdquest[/url] [url=https://mit-license.org/]MIT[/url][/center]
 "
 text = "
 Credits:
 
 Programming + music + SFX + art: Bryden Frizzell
 Gunshot SFX adapted from: Mike Koenig \"40 Smith Wesson 8x\" CC-BY-3.0
+Mannequiny: gdquest MIT
 "
 script = ExtResource( 5 )
 

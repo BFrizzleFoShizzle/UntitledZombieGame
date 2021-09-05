@@ -9,9 +9,14 @@ const accel = 2000.0
 var health = 100.0
 
 const attackTime = 1.0
+# attack anim time
+const attackCycleLength = 0.1
 var currAttackTime = 0.0
 const damage = 3.0
+const jumpHeight = 0.3
 
+
+onready var transformOrigin = $MeshInstance.transform.origin
 onready var wall = get_node("../Terrain/Wall/WallOmniCollider")
 onready var world = get_node("/root/World")
 
@@ -27,9 +32,17 @@ func _integrate_forces(state):
 		state.linear_velocity /= (state.linear_velocity.length() / maxSpeed)
 	pass
 	
+
+func attack_anim(time):
+	time = min(time, attackCycleLength)
+	var height = sin((time / attackCycleLength) * PI) * jumpHeight
+	$MeshInstance.transform.origin = transformOrigin + Vector3(0.0, height, 0.0)
+	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	if currAttackTime > 0.0:
+		var animTime = attackTime - currAttackTime
+		attack_anim(animTime)
 		currAttackTime -= delta
 	if currAttackTime <= 0.0:
 		if wall in get_colliding_bodies():
