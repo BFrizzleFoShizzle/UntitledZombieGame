@@ -1,7 +1,14 @@
 class_name GunState
 
+enum Gun {
+	PISTOL
+	SAWN_OFF
+	UZI
+}
+
 class GunStats:
 	var factory
+	var name: String
 	var damage: float
 	var attackKnockback: float
 	var fireInterval: float
@@ -9,9 +16,11 @@ class GunStats:
 	var automatic: bool
 	var shots: int
 	var magazineCount: int
-	func _init(factory, damage: float, attackKnockback: float, reloadTime: float, 
-			magazineCount: int, shots: int = 1, automatic: bool = false, fireInterval: float = 0.01):
+	var spread: float
+	func _init(factory, name:String, damage: float, attackKnockback: float, reloadTime: float, 
+			magazineCount: int, spread: float, shots: int = 1, automatic: bool = false, fireInterval: float = 0.01):
 		self.factory = factory
+		self.name = name
 		self.damage = damage
 		self.attackKnockback = attackKnockback
 		self.fireInterval = fireInterval
@@ -19,6 +28,7 @@ class GunStats:
 		self.automatic = automatic
 		self.shots = shots
 		self.magazineCount = magazineCount
+		self.spread = spread
 
 # instance stuff
 var gunStats: GunStats

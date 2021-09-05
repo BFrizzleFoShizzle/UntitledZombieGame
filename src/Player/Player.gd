@@ -9,28 +9,38 @@ onready var state_machine: StateMachine = $StateMachine
 onready var target:Spatial = $Target
 onready var gun:Spatial = $Target/Hand
 
-enum Gun {
-	PISTOL
-	UZI
-}
-
 # HACK putting this on GunState causes it to be initialized for each instance
 var _gun_stats = [
 	# Pistol
 	GunState.GunStats.new(
 		preload("res://Gun1.tscn"),
+		"Pistol", # name
 		25.0, # damage
 		200.0, # knockback
-		1.0, #reloadTime
-		12 #magazineCount
+		1.0, # reloadTime
+		12, # magazineCount
+		0.02 # spread
+	),
+	# Sawn-off
+	GunState.GunStats.new(
+		preload("res://Gun3.tscn"),
+		"Sawn-off", # name
+		10.0, # damage
+		50.0, # knockback
+		1.0, # reloadTime
+		2, # magazineCount
+		0.07, # spread
+		10 # shots
 	),
 	# Uzi
 	GunState.GunStats.new(
 		preload("res://Gun2.tscn"),
+		"Uzi", # name
 		15.0, # damage
 		150.0, # knockback
-		1.0, #reloadTime
-		30, #magazineCount
+		1.0, # reloadTime
+		30, # magazineCount
+		0.05, # spread
 		1, # shots
 		true, # automatic
 		1.0 / 20 # fire interval
@@ -38,7 +48,7 @@ var _gun_stats = [
 ]
 
 # Init gun
-var _gun:int = Gun.PISTOL
+var _gun:int = GunState.Gun.PISTOL
 var _gunState:GunState = GunState.new(_gun_stats[_gun])
 
 const Enemy = preload("res://Enemy.gd")
@@ -77,50 +87,10 @@ func _input(event):
 			ray_target = pixelResult.position
 			
 			if event is InputEventMouseButton && event.button_index  == 1 && event.pressed == true:
-				if canAttack():
-					shooting = true
+				shooting = true
 			
 			if event is InputEventMouseButton && event.button_index  == 1 && event.pressed == false:
 				shooting = false
-	
-	if shooting && canAttack():
-		shoot()
-		
-		if(!isAutomatic()):
-			shooting = false
-		
-		# gunshot
-		play_gunshot()
-		muzzleFlashLight.flash()
-		
-		var shotOrigin = bulletSpawn.global_transform.origin
-		var shotDir = (ray_target - shotOrigin)
-		shotDir = Vector3(shotDir.x, 0.0, shotDir.z).normalized()
-		
-		# Create casing
-		var casing = Casing.instance()
-		get_node("/root/World/GameWorld").add_child(casing)
-		casing.global_transform = casingSpawn.global_transform
-		var casingMoveDir = (shotDir.cross(Vector3(0.0,1.0,0.0)) + Vector3(0.0,0.2,0.0))
-		casingMoveDir += Vector3(0.0,1.0,0.0) * rand_range(-0.1, 0.1)
-		casingMoveDir += shotDir * rand_range(-0.1, 0.1)
-		casingMoveDir = casingMoveDir.normalized()
-		var forceOrigin = Vector3(rand_range(-0.1,0.1), rand_range(-0.1,0.1), rand_range(-0.1,0.1))
-		casing.add_force(rand_range(shellEjectForceMin, shellEjectForceMax) * casingMoveDir, forceOrigin)
-		
-		var shotEnd = shotOrigin + shotDir*20.0
-		var result = get_world().direct_space_state.intersect_ray(shotOrigin, shotEnd, [self])
-		if result:
-			rayDrawer.queue_ray(shotOrigin, result.position)
-			if result.collider is Enemy:
-				#print("Enemy hit!")
-				result.collider.take_damage(getDamage())
-				# knockback
-				#result.collider.add_force(Vector3(1.0, 0.0, 0.0) * attackKnockback, Vector3(0.0, 0.0, 0.0))
-				result.collider.add_force(shotDir.normalized() * getKnockback(), Vector3(0.0, 0.0, 0.0))
-		else:
-			# Miss
-			rayDrawer.queue_ray(shotOrigin, shotEnd)
 
 func _process(delta):
 	_gunState.process(delta)
@@ -142,7 +112,59 @@ func _process(delta):
 		global_transform = global_transform.interpolate_with(targetTransform, rot_speed*delta)
 		target.global_transform.origin = gunPos
 		gun.look_at(gun.global_transform.origin + Vector3.UP.cross(look_dir), look_dir)
+		
+	if shooting && _gunState.canShoot():
+		_gunState.shoot()
+		
+		if(!_gunState.gunStats.automatic):
+			shooting = false
+		
+		# gunshot
+		play_gunshot()
+		muzzleFlashLight.flash()
+		
+		var shotOrigin = bulletSpawn.global_transform.origin
+		# before spread
+		var aimDir = (ray_target - shotOrigin)
+		aimDir = Vector3(aimDir.x, 0.0, aimDir.z).normalized()
+		var aimOrthog = aimDir.cross(Vector3.UP)
+		
+		# Create casing
+		var casing = Casing.instance()
+		get_node("/root/World/GameWorld").add_child(casing)
+		casing.global_transform = casingSpawn.global_transform
+		var casingMoveDir = (aimOrthog + Vector3(0.0,0.2,0.0))
+		casingMoveDir += Vector3.UP * rand_range(-0.1, 0.1)
+		casingMoveDir += aimDir * rand_range(-0.1, 0.1)
+		casingMoveDir = casingMoveDir.normalized()
+		var forceOrigin = Vector3(rand_range(-0.1,0.1), rand_range(-0.1,0.1), rand_range(-0.1,0.1))
+		casing.add_force(rand_range(shellEjectForceMin, shellEjectForceMax) * casingMoveDir, forceOrigin)
+		
+		for i in range(_gunState.gunStats.shots):
+			# apply spread
+			var shotDir = aimDir
+			shotDir += aimOrthog * rand_range(-1.0, 1.0) * _gunState.gunStats.spread
+			shotDir += Vector3.UP * rand_range(-1.0, 1.0) * _gunState.gunStats.spread
+			shotDir = shotDir.normalized()
+			
+			var shotEnd = shotOrigin + shotDir*20.0
+			var result = get_world().direct_space_state.intersect_ray(shotOrigin, shotEnd, [self])
+			if result:
+				rayDrawer.queue_ray(shotOrigin, result.position)
+				if result.collider is Enemy:
+					#print("Enemy hit!")
+					result.collider.take_damage(getDamage())
+					# knockback
+					#result.collider.add_force(Vector3(1.0, 0.0, 0.0) * attackKnockback, Vector3(0.0, 0.0, 0.0))
+					result.collider.add_force(shotDir.normalized() * getKnockback(), Vector3(0.0, 0.0, 0.0))
+			else:
+				# Miss
+				rayDrawer.queue_ray(shotOrigin, shotEnd)
 
+func _ready():
+	#change_gun(GunState.Gun.SAWN_OFF)
+	_updateGunRefs()
+	
 func change_gun(gun:int):
 	if _gun == gun:
 		return
@@ -160,24 +182,9 @@ func play_gunshot():
 	var gunSound = GunSound.instance()
 	add_child(gunSound)
 
-func _ready():
-	change_gun(Gun.UZI)
-	_updateGunRefs()
-
 func getDamage():
 	return _gunState.gunStats.damage
 	
 func getKnockback():
 	return _gunState.gunStats.attackKnockback
 
-func canAttack():
-	return _gunState.canShoot()
-
-func isAutomatic():
-	return _gunState.gunStats.automatic
-
-func shoot():
-	_gunState.shoot()
-#
-#func _get_configuration_warning() -> String:
-#	return "Missing camera node" if not camera else ""

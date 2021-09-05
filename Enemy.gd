@@ -13,7 +13,7 @@ const attackTimeRand = 0.1
 # attack anim time
 const attackCycleLength = 0.2
 var currAttackTime = 0.0
-const damage = 3.0
+var damage = 3.0
 
 
 onready var wall = get_node("../Terrain/Wall/WallOmniCollider")
@@ -53,7 +53,8 @@ func _process(delta):
 	pass
 
 func take_damage(damage):
-	health = max(0.0, health-damage)
-	if health == 0.0:
-		world.addEnemyDeath()
-		queue_free()
+	if health > 0.0:
+		health = max(0.0, health-damage)
+		if health == 0.0:
+			world.addEnemyDeath()
+			queue_free()

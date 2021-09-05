@@ -11,7 +11,7 @@ var currLines = []
 # true if no segments are drawn
 var is_clear = true
 
-var UpdateTimeDelta = 0.03
+var UpdateTimeDelta = 0.02
 var currUpdateTime = 0.0
 
 # queue drawing of ray next frame

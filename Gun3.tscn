@@ -1,0 +1,55 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://MuzzleFlashLight.gd" type="Script" id=1]
+
+[sub_resource type="CubeMesh" id=4]
+size = Vector3( 0.04, 0.15, 0.04 )
+
+[sub_resource type="CubeMesh" id=5]
+size = Vector3( 0.04, 0.04, 0.12 )
+
+[sub_resource type="CylinderMesh" id=3]
+top_radius = 0.015
+bottom_radius = 0.015
+height = 0.2
+
+[node name="Gun" type="Spatial"]
+transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 0.05, 0 )
+
+[node name="Barrel" type="MeshInstance" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.017254, 0.0831996, 0.0909702 )
+cast_shadow = 0
+mesh = SubResource( 4 )
+material/0 = null
+
+[node name="Handle" type="MeshInstance" parent="."]
+transform = Transform( 1, -1.76723e-08, -3.73171e-09, 1.76723e-08, 0.914628, 0.404296, -3.73171e-09, -0.404296, 0.914628, -0.017254, 0.0173554, 0.04 )
+cast_shadow = 0
+mesh = SubResource( 5 )
+material/0 = null
+
+[node name="Flash" type="OmniLight" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.57196e-08, 0.286073, 0.0999674 )
+light_color = Color( 0.952941, 0.917647, 0.827451, 1 )
+light_energy = 0.2
+shadow_enabled = true
+omni_range = 10.0
+script = ExtResource( 1 )
+
+[node name="CasingSpawn" type="Spatial" parent="."]
+transform = Transform( -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0.0566828, 0.0919182, 0.100956 )
+
+[node name="BulletSpawn" type="Spatial" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.04511e-09, 0.246223, 0.103909 )
+
+[node name="Barrel1" type="MeshInstance" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00227794, 0.150339, 0.102082 )
+cast_shadow = 0
+mesh = SubResource( 3 )
+material/0 = null
+
+[node name="Barrel2" type="MeshInstance" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.032254, 0.15027, 0.102 )
+cast_shadow = 0
+mesh = SubResource( 3 )
+material/0 = null

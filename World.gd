@@ -12,6 +12,8 @@ var nextSpawnTime = 0.0
 var currSpawnTime = 0.0
 var EnemyInst = load("res://Enemy.tscn")
 var EnemyFastInst = load("res://EnemyFast.tscn")
+var EnemyStrongInst = load("res://EnemyStrong.tscn")
+var EnemyFastStrongInst = load("res://EnemyFastStrong.tscn")
 
 const maxWallHealth = 100.0
 var wallHealth = maxWallHealth
@@ -20,19 +22,10 @@ var wallHealth = maxWallHealth
 var enemyCount = 0
 var totalKills = 0
 
-const levelTimeLength = 60.0
-var levelTimer = levelTimeLength
-
-enum EnemyType {
-	NORMAL
-	FAST
-	COUNT
-}
-
 onready var healthText = find_node("HealthText")
 onready var gameWorld = get_node("GameWorld")
 
-# inter-level stuff
+# inter-level stuff 
 var playerProgress:PlayerProgression = PlayerProgression.new()
 var score = 0
 export (NodePath) var freeHoursLabelPath
@@ -43,6 +36,11 @@ export (NodePath) var dayLabelPath
 export (NodePath) var killsLabelPath
 export (NodePath) var scoreLabelPath
 export (NodePath) var newWallHealthLabelPath
+export (NodePath) var weaponSelectMessageLabelPath
+export (NodePath) var weapon1ButtonPath
+export (NodePath) var weapon2ButtonPath
+export (NodePath) var weapon3ButtonPath
+export (NodePath) var weapon4ButtonPath
 
 onready var freeHoursLabel:Label = get_node(freeHoursLabelPath)
 onready var repairHoursLabel:Label = get_node(repairHoursLabelPath)
@@ -52,6 +50,15 @@ onready var dayLabel:Label = get_node(dayLabelPath)
 onready var killsLabel:Label = get_node(killsLabelPath)
 onready var scoreLabel:Label = get_node(scoreLabelPath)
 onready var newWallHealthLabel:Label = get_node(newWallHealthLabelPath)
+onready var weaponSelectMessageLabel:Label = get_node(weaponSelectMessageLabelPath)
+onready var weaponSelectButtons = [
+	get_node(weapon1ButtonPath),
+	get_node(weapon2ButtonPath),
+	get_node(weapon3ButtonPath),
+	get_node(weapon4ButtonPath),
+]
+
+var levelTimer = playerProgress.getRoundTime()
 
 func updateLevelEndUI():
 	freeHoursLabel.text = str(playerProgress.getFreeHours())
@@ -63,22 +70,32 @@ func updateLevelEndUI():
 	killsLabel.text = str(totalKills)
 	scoreLabel.text = str(score + relaxScore)
 	newWallHealthLabel.text = str(min(maxWallHealth, wallHealth + playerProgress.getAmountRepaired()))
-	
-func startNextLevel():
+
+func openWeaponSelect():
 	# repair
 	var healAmount = playerProgress.getAmountRepaired()
 	wallHealth += healAmount
 	wallHealth = min(maxWallHealth, wallHealth)
 	$GameUI/HBoxContainer/HealthText.text = str(wallHealth)
 	
+	weaponSelectMessageLabel.text = "Select your weapon."
 	if playerProgress.unlockNextGun():
-		$GameWorld/Player.change_gun(Player.Gun.UZI)
+		var newGunIdx = playerProgress.getNextGunUnlock()
+		var gunName = $GameWorld/Player._gun_stats[newGunIdx].name
+		weaponSelectMessageLabel.text = "New weapon unlocked: " + $GameWorld/Player._gun_stats[newGunIdx].name
+		weaponSelectButtons[newGunIdx].text = gunName
+		weaponSelectButtons[newGunIdx].disabled = false
+		
+	$LevelEndUI.visible = false
+	$WeaponSelectUI.visible = true
 	
-	# TODO search + rest
 	playerProgress.endDay()
 	totalKills = 0
-	levelTimer = levelTimeLength
-	$LevelEndUI.visible = false
+	
+
+func startNextLevel():
+	levelTimer = playerProgress.getRoundTime()
+	$WeaponSelectUI.visible = false
 	gameWorld.get_tree().paused = false
 
 func damage_wall(damage):
@@ -99,14 +116,36 @@ func addEnemyDeath():
 	enemyCount -= 1
 	totalKills += 1
 
+func pause():
+	gameWorld.get_tree().paused = true
+	
+func unpause():
+	var allPanelsInvisible = true
+	allPanelsInvisible = allPanelsInvisible && !$GameOverUI.visible
+	allPanelsInvisible = allPanelsInvisible && !$LevelEndUI.visible
+	allPanelsInvisible = allPanelsInvisible && !$WeaponSelectUI.visible
+	allPanelsInvisible = allPanelsInvisible && !$PauseMenu.visible
+	if allPanelsInvisible:
+		gameWorld.get_tree().paused = false
+
 func _endLevel():
 	gameWorld.get_tree().paused = true
 	score += totalKills * 10.0
 	updateLevelEndUI()
 	$LevelEndUI.visible = true
+	unpause()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
+	# pause menu
+	if Input.is_action_pressed("pause_menu"):
+		$PauseMenu.visible = true
+		pause()
+	
+	# don't process while paused	
+	if gameWorld.get_tree().paused == true:
+		return
+	
 	levelTimer -= delta
 	if levelTimer > 0.0:
 		currSpawnTime += delta
@@ -117,12 +156,19 @@ func _process(delta):
 		enemyCount += 1
 		currSpawnTime -= nextSpawnTime
 		nextSpawnTime = rand_range(MinSpawnTime, MaxSpawnTime)
-		var randType = min(int(rand_range(0.0, EnemyType.COUNT)), EnemyType.COUNT - 1)
+		var enemyType = playerProgress.getNextEnemyType()
 		var newEnemy = null
-		if randType == EnemyType.NORMAL:
+		if enemyType == PlayerProgression.EnemyType.NORMAL:
 			newEnemy = EnemyInst.instance()
-		elif randType == EnemyType.FAST:
+		elif enemyType == PlayerProgression.EnemyType.FAST:
 			newEnemy = EnemyFastInst.instance()
+		elif enemyType == PlayerProgression.EnemyType.STRONG:
+			newEnemy = EnemyStrongInst.instance()
+		elif enemyType == PlayerProgression.EnemyType.FAST_STRONG:
+			newEnemy = EnemyFastStrongInst.instance()
 		newEnemy.translation = SpawnOrigin + SpawnRandomDir * rand_range(0.0, 1.0)
 		gameWorld.add_child(newEnemy)
 	pass
+	
+func setPlayerWeapon(weaponIdx:int):
+	$GameWorld/Player.change_gun(weaponIdx)
