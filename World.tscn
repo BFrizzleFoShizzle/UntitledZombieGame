@@ -1,33 +1,18 @@
-[gd_scene load_steps=26 format=2]
+[gd_scene load_steps=20 format=2]
 
-[ext_resource path="res://Player_old.gd" type="Script" id=1]
 [ext_resource path="res://RayDraw.gd" type="Script" id=2]
 [ext_resource path="res://World.gd" type="Script" id=3]
 [ext_resource path="res://main-2.wav" type="AudioStream" id=4]
 [ext_resource path="res://MusicLoop.gd" type="Script" id=5]
 [ext_resource path="res://RayDraw3D.gd" type="Script" id=6]
 [ext_resource path="res://Images/HP1.png" type="Texture" id=7]
-[ext_resource path="res://MuzzleFlashLight.gd" type="Script" id=8]
 [ext_resource path="res://NotoSansUI_Regular.ttf" type="DynamicFontData" id=9]
 [ext_resource path="res://SceneChangeButton.gd" type="Script" id=10]
+[ext_resource path="res://src/Player/Player.tscn" type="PackedScene" id=11]
 
 [sub_resource type="DynamicFont" id=1]
 size = 50
 font_data = ExtResource( 9 )
-
-[sub_resource type="PhysicsMaterial" id=2]
-
-[sub_resource type="CapsuleShape" id=3]
-radius = 0.4
-
-[sub_resource type="CapsuleMesh" id=4]
-radius = 0.4
-
-[sub_resource type="CubeMesh" id=5]
-size = Vector3( 0.3, 0.1, 0.1 )
-
-[sub_resource type="CubeMesh" id=6]
-size = Vector3( 0.1, 0.1, 0.2 )
 
 [sub_resource type="CubeMesh" id=7]
 
@@ -138,53 +123,8 @@ transform = Transform( 1, 0, 0, 0, 0.890118, 0.455731, 0, -0.455731, 0.890118, -
 keep_aspect = 0
 fov = 65.0
 
-[node name="Player" type="Spatial" parent="GameWorld"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4.835, 1, 0 )
-
-[node name="RigidBody" type="RigidBody" parent="GameWorld/Player"]
-transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -0.038, 0, -0.061 )
-physics_material_override = SubResource( 2 )
-axis_lock_linear_y = true
-axis_lock_angular_x = true
-axis_lock_angular_y = true
-axis_lock_angular_z = true
-linear_damp = 5.0
-script = ExtResource( 1 )
-
-[node name="CollisionShape" type="CollisionShape" parent="GameWorld/Player/RigidBody"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0855103, 0.0514526, 0.0649014 )
-shape = SubResource( 3 )
-
-[node name="MeshInstance" type="MeshInstance" parent="GameWorld/Player/RigidBody"]
-mesh = SubResource( 4 )
-material/0 = null
-
-[node name="PlayerGun" type="Spatial" parent="GameWorld/Player/RigidBody"]
-transform = Transform( 1.91069e-15, -4.37114e-08, -1, -1, -4.37114e-08, 0, -4.37114e-08, 1, -4.37114e-08, 0.8, 0, 0 )
-
-[node name="Barrel" type="MeshInstance" parent="GameWorld/Player/RigidBody/PlayerGun"]
-transform = Transform( -4.37114e-08, -1, -4.37114e-08, 0, -4.37114e-08, 1, -1, 4.37114e-08, 1.91069e-15, 0, 0, 0 )
-layers = 2
-cast_shadow = 0
-use_in_baked_light = true
-mesh = SubResource( 5 )
-material/0 = null
-
-[node name="MeshInstance" type="MeshInstance" parent="GameWorld/Player/RigidBody/PlayerGun/Barrel"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.1, 0, -0.1 )
-layers = 2
-cast_shadow = 0
-mesh = SubResource( 6 )
-material/0 = null
-
-[node name="Flash" type="OmniLight" parent="GameWorld/Player/RigidBody/PlayerGun"]
-transform = Transform( 1, 0, 0, 0, 1, -2.03644e-29, 0, -2.03644e-29, 1, 0, 0, -0.196 )
-visible = false
-light_color = Color( 0.952941, 0.917647, 0.827451, 1 )
-light_energy = 0.2
-shadow_enabled = true
-omni_range = 10.0
-script = ExtResource( 8 )
+[node name="Player" parent="GameWorld" instance=ExtResource( 11 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4.75929, 0.426579, 0 )
 
 [node name="Terrain" type="Spatial" parent="GameWorld"]
 
