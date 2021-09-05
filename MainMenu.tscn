@@ -108,6 +108,7 @@ Credits:
 Programming + music + SFX + art: Bryden Frizzell
 Pistol SFX adapted from: [url=https://soundbible.com/2123-40-Smith-Wesson-8x.html]Mike Koenig \"40 Smith Wesson 8x\"[/url] [url=http://creativecommons.org/licenses/by/3.0/legalcode]CC-BY-3.0[/url]
 Shotgun SFX adapted from: [url=https://freesound.org/people/aleksnascimento/sounds/161195/]aleksnascimento \"Glock Shot Sound Effect\"[/url] [url=http://creativecommons.org/licenses/by/3.0/legalcode]CC-BY-3.0[/url]
+Reload SFX: [url=https://freesound.org/people/Fr3yr/sounds/100804/]Fr3yr \"Glock19_reload.wav\"[/url] [url=http://creativecommons.org/licenses/by/3.0/legalcode]CC-BY-3.0[/url]
 Mannequiny: [url=https://godotengine.org/asset-library/asset/440]gdquest[/url] [url=https://mit-license.org/]MIT[/url][/center]
 "
 text = "
@@ -116,6 +117,7 @@ Credits:
 Programming + music + SFX + art: Bryden Frizzell
 Pistol SFX adapted from: Mike Koenig \"40 Smith Wesson 8x\" CC-BY-3.0
 Shotgun SFX adapted from: aleksnascimento \"Glock Shot Sound Effect\" CC-BY-3.0
+Reload SFX: Fr3yr \"Glock19_reload.wav\" CC-BY-3.0
 Mannequiny: gdquest MIT
 "
 script = ExtResource( 5 )

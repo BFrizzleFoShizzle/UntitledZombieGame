@@ -56,6 +56,7 @@ var _gunState:GunState = GunState.new(_gun_stats[_gun])
 
 const Enemy = preload("res://Enemy.gd")
 const Casing = preload("res://Casing.tscn")
+const ReloadSound = preload("res://ReloadSound.tscn")
 onready var rayDrawer = get_node("../RayDraw3D")
 var casingSpawn: Spatial
 var bulletSpawn: Spatial
@@ -117,6 +118,11 @@ func _process(delta):
 		
 	if shooting && _gunState.canShoot():
 		_gunState.shoot()
+		
+		# this is super hacky
+		if _gunState.isReloading():
+			add_child(ReloadSound.instance())
+			
 		
 		if(!_gunState.gunStats.automatic):
 			shooting = false

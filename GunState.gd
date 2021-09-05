@@ -64,3 +64,6 @@ func process(delta:float):
 	currReloadTime -= delta
 	if bulletsInMag <= 0 && currReloadTime <= 0.0:
 		bulletsInMag = gunStats.magazineCount
+
+func isReloading():
+	return bulletsInMag == 0
