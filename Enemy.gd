@@ -4,7 +4,7 @@ extends RigidBody
 # Declare member variables here. Examples:
 # var a = 2
 # var b = "text"
-const maxSpeed = 1.2
+var maxSpeed = 1.0
 const accel = 2000.0
 var health = 100.0
 
@@ -14,7 +14,6 @@ const attackTimeRand = 0.1
 const attackCycleLength = 0.2
 var currAttackTime = 0.0
 const damage = 3.0
-const jumpHeight = 0.3
 
 
 onready var wall = get_node("../Terrain/Wall/WallOmniCollider")
@@ -35,17 +34,20 @@ func _integrate_forces(state):
 	if(state.linear_velocity.length() > maxSpeed):
 		state.linear_velocity /= (state.linear_velocity.length() / maxSpeed)
 	pass
-	
+
+func attack():
+	world.damage_wall(damage)
+	$Mannequiny.set_is_moving(false)
+	$Mannequiny.set_move_direction(Vector3(0.0,0.0,0.0))
+	$Mannequiny.transition_to(Mannequiny.States.ATTACK)
+	currAttackTime = attackTime + rand_range(0.0,attackTimeRand)
+
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	currAttackTime -= delta
 	if currAttackTime <= 0.0:
 		if wall in get_colliding_bodies():
-			world.damage_wall(damage)
-			$Mannequiny.set_is_moving(false)
-			$Mannequiny.set_move_direction(Vector3(0.0,0.0,0.0))
-			$Mannequiny.transition_to(Mannequiny.States.ATTACK)
-			currAttackTime = attackTime + rand_range(0.0,attackTimeRand)
+			attack()
 	#move_and_collide(Vector3(-speed * delta, 0.0, 0.0 ))
 	add_force(Vector3(-1.0, 0.0, 0.0) * delta * accel, Vector3(0,0,0))
 	pass

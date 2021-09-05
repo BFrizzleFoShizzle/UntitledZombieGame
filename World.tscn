@@ -14,27 +14,27 @@
 size = 50
 font_data = ExtResource( 9 )
 
-[sub_resource type="CubeMesh" id=7]
+[sub_resource type="CubeMesh" id=2]
 
-[sub_resource type="BoxShape" id=8]
+[sub_resource type="BoxShape" id=3]
 
-[sub_resource type="BoxShape" id=9]
+[sub_resource type="BoxShape" id=4]
 
-[sub_resource type="QuadMesh" id=10]
+[sub_resource type="QuadMesh" id=5]
 
-[sub_resource type="BoxShape" id=11]
+[sub_resource type="BoxShape" id=6]
 extents = Vector3( 0.5, 0.5, 0.5 )
 
-[sub_resource type="BoxShape" id=12]
+[sub_resource type="BoxShape" id=7]
 
-[sub_resource type="SpatialMaterial" id=13]
+[sub_resource type="SpatialMaterial" id=8]
 flags_unshaded = true
 albedo_color = Color( 1, 1, 0.933333, 1 )
 
-[sub_resource type="BoxShape" id=14]
+[sub_resource type="BoxShape" id=9]
 extents = Vector3( 15, 0.2, 15 )
 
-[sub_resource type="CubeMesh" id=15]
+[sub_resource type="CubeMesh" id=10]
 size = Vector3( 10, 0.2, 10 )
 
 [node name="World" type="Spatial"]
@@ -139,11 +139,11 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0 )
 
 [node name="WallMesh" type="MeshInstance" parent="GameWorld/Terrain/Wall/Wall3/Wall1"]
 use_in_baked_light = true
-mesh = SubResource( 7 )
+mesh = SubResource( 2 )
 material/0 = null
 
 [node name="CollisionShape" type="CollisionShape" parent="GameWorld/Terrain/Wall/Wall3/Wall1"]
-shape = SubResource( 8 )
+shape = SubResource( 3 )
 
 [node name="Wall2" type="Spatial" parent="GameWorld/Terrain/Wall"]
 transform = Transform( 0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0.2, 0, 0.8 )
@@ -152,11 +152,11 @@ transform = Transform( 0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0.2, 0, 0.8 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0 )
 
 [node name="WallMesh" type="MeshInstance" parent="GameWorld/Terrain/Wall/Wall2/Wall1"]
-mesh = SubResource( 7 )
+mesh = SubResource( 2 )
 material/0 = null
 
 [node name="CollisionShape" type="CollisionShape" parent="GameWorld/Terrain/Wall/Wall2/Wall1"]
-shape = SubResource( 8 )
+shape = SubResource( 3 )
 
 [node name="Wall1" type="Spatial" parent="GameWorld/Terrain/Wall"]
 transform = Transform( 0.5, 0, 0, 0, 0.48, 0, 0, 0, 0.5, 0, 0, 0 )
@@ -165,11 +165,11 @@ transform = Transform( 0.5, 0, 0, 0, 0.48, 0, 0, 0, 0.5, 0, 0, 0 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0 )
 
 [node name="WallMesh" type="MeshInstance" parent="GameWorld/Terrain/Wall/Wall1/Wall1"]
-mesh = SubResource( 7 )
+mesh = SubResource( 2 )
 material/0 = null
 
 [node name="CollisionShape" type="CollisionShape" parent="GameWorld/Terrain/Wall/Wall1/Wall1"]
-shape = SubResource( 8 )
+shape = SubResource( 3 )
 
 [node name="Wall4" type="Spatial" parent="GameWorld/Terrain/Wall"]
 transform = Transform( 0.3, 0, 0, 0, 0.55, 0, 0, 0, 0.6, -0.1, 0, 2.539 )
@@ -178,11 +178,11 @@ transform = Transform( 0.3, 0, 0, 0, 0.55, 0, 0, 0, 0.6, -0.1, 0, 2.539 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0 )
 
 [node name="WallMesh" type="MeshInstance" parent="GameWorld/Terrain/Wall/Wall4/Wall1"]
-mesh = SubResource( 7 )
+mesh = SubResource( 2 )
 material/0 = null
 
 [node name="CollisionShape" type="CollisionShape" parent="GameWorld/Terrain/Wall/Wall4/Wall1"]
-shape = SubResource( 8 )
+shape = SubResource( 3 )
 
 [node name="Wall5" type="Spatial" parent="GameWorld/Terrain/Wall"]
 transform = Transform( 0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0.0854176, 0, 3.35419 )
@@ -191,11 +191,11 @@ transform = Transform( 0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0.0854176, 0, 3.35419 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0 )
 
 [node name="WallMesh" type="MeshInstance" parent="GameWorld/Terrain/Wall/Wall5/Wall1"]
-mesh = SubResource( 7 )
+mesh = SubResource( 2 )
 material/0 = null
 
 [node name="CollisionShape" type="CollisionShape" parent="GameWorld/Terrain/Wall/Wall5/Wall1"]
-shape = SubResource( 8 )
+shape = SubResource( 3 )
 
 [node name="Wall6" type="Spatial" parent="GameWorld/Terrain/Wall"]
 transform = Transform( 0.6, 0, 0, 0, 0.4, 0, 0, 0, 0.4, 0.124462, 0, -0.821108 )
@@ -204,11 +204,11 @@ transform = Transform( 0.6, 0, 0, 0, 0.4, 0, 0, 0, 0.4, 0.124462, 0, -0.821108 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0 )
 
 [node name="WallMesh" type="MeshInstance" parent="GameWorld/Terrain/Wall/Wall6/Wall1"]
-mesh = SubResource( 7 )
+mesh = SubResource( 2 )
 material/0 = null
 
 [node name="CollisionShape" type="CollisionShape" parent="GameWorld/Terrain/Wall/Wall6/Wall1"]
-shape = SubResource( 8 )
+shape = SubResource( 3 )
 
 [node name="Wall7" type="Spatial" parent="GameWorld/Terrain/Wall"]
 transform = Transform( 0.45, 0, 0, 0, 0.45, 0, 0, 0, 0.4, 0.129225, 0, -1.58951 )
@@ -217,11 +217,11 @@ transform = Transform( 0.45, 0, 0, 0, 0.45, 0, 0, 0, 0.4, 0.129225, 0, -1.58951 
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0 )
 
 [node name="WallMesh" type="MeshInstance" parent="GameWorld/Terrain/Wall/Wall7/Wall1"]
-mesh = SubResource( 7 )
+mesh = SubResource( 2 )
 material/0 = null
 
 [node name="CollisionShape" type="CollisionShape" parent="GameWorld/Terrain/Wall/Wall7/Wall1"]
-shape = SubResource( 8 )
+shape = SubResource( 3 )
 
 [node name="Wall8" type="Spatial" parent="GameWorld/Terrain/Wall"]
 transform = Transform( 0.55, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0.209947, 0, -2.43037 )
@@ -230,17 +230,17 @@ transform = Transform( 0.55, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0.209947, 0, -2.43037 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0 )
 
 [node name="WallMesh" type="MeshInstance" parent="GameWorld/Terrain/Wall/Wall8/Wall1"]
-mesh = SubResource( 7 )
+mesh = SubResource( 2 )
 material/0 = null
 
 [node name="CollisionShape" type="CollisionShape" parent="GameWorld/Terrain/Wall/Wall8/Wall1"]
-shape = SubResource( 8 )
+shape = SubResource( 3 )
 
 [node name="WallOmniCollider" type="StaticBody" parent="GameWorld/Terrain/Wall"]
 
 [node name="CollisionShape" type="CollisionShape" parent="GameWorld/Terrain/Wall/WallOmniCollider"]
 transform = Transform( 0.8, 0, 0, 0, 1, 0, 0, 0, 5, 0.1, 0, 0 )
-shape = SubResource( 9 )
+shape = SubResource( 4 )
 
 [node name="Floor" type="StaticBody" parent="GameWorld/Terrain"]
 transform = Transform( 15, 0, 0, 0, -3.49691e-07, 1, 0, -8, -4.37114e-08, 0, 0, 0 )
@@ -248,30 +248,30 @@ transform = Transform( 15, 0, 0, 0, -3.49691e-07, 1, 0, -8, -4.37114e-08, 0, 0, 
 [node name="FloorMesh" type="MeshInstance" parent="GameWorld/Terrain/Floor"]
 transform = Transform( 1, 0, 0, 0, 1, -4.44089e-16, 0, 0, 1, 0, 0, 0 )
 use_in_baked_light = true
-mesh = SubResource( 10 )
+mesh = SubResource( 5 )
 material/0 = null
 
 [node name="CollisionShape" type="CollisionShape" parent="GameWorld/Terrain/Floor"]
 transform = Transform( 1, 0, 0, 0, 1, -8.88178e-16, 0, 2.84217e-14, 1, 0, 4.44089e-16, -0.5 )
-shape = SubResource( 11 )
+shape = SubResource( 6 )
 
 [node name="Bounds" type="StaticBody" parent="GameWorld/Terrain"]
 
 [node name="CollisionShape" type="CollisionShape" parent="GameWorld/Terrain/Bounds"]
 transform = Transform( 1, 0, 0, 0, 5, 0, 0, 0, 5, -7.5, 0, 0 )
-shape = SubResource( 12 )
+shape = SubResource( 7 )
 
 [node name="CollisionShape2" type="CollisionShape" parent="GameWorld/Terrain/Bounds"]
 transform = Transform( 15, 0, 0, 0, 5, 0, 0, 0, 1, 0, 0, -4 )
-shape = SubResource( 12 )
+shape = SubResource( 7 )
 
 [node name="CollisionShape3" type="CollisionShape" parent="GameWorld/Terrain/Bounds"]
 transform = Transform( 15, 0, 0, 0, 5, 0, 0, 0, 0.5, 0, 0, 4 )
-shape = SubResource( 12 )
+shape = SubResource( 7 )
 
 [node name="CollisionShape4" type="CollisionShape" parent="GameWorld/Terrain/Bounds"]
 transform = Transform( 1, 0, 0, 0, 5, 0, 0, 0, 5, 14, 0, 0 )
-shape = SubResource( 12 )
+shape = SubResource( 7 )
 
 [node name="DirectionalLight" type="DirectionalLight" parent="GameWorld"]
 transform = Transform( 0.820092, 0.0312921, 0.571375, -0.41043, 0.727944, 0.549222, -0.398743, -0.684922, 0.609825, 0, 2.64186, 0 )
@@ -280,7 +280,7 @@ light_energy = 0.4
 shadow_enabled = true
 
 [node name="RayDraw3D" type="ImmediateGeometry" parent="GameWorld"]
-material_override = SubResource( 13 )
+material_override = SubResource( 8 )
 cast_shadow = 0
 script = ExtResource( 6 )
 
@@ -288,11 +288,11 @@ script = ExtResource( 6 )
 
 [node name="AttackPlane" type="CollisionShape" parent="GameWorld/Area"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0 )
-shape = SubResource( 14 )
+shape = SubResource( 9 )
 
 [node name="MeshInstance" type="MeshInstance" parent="GameWorld/Area/AttackPlane"]
 visible = false
-mesh = SubResource( 15 )
+mesh = SubResource( 10 )
 material/0 = null
 
 [node name="MusicLoop" type="AudioStreamPlayer" parent="GameWorld"]
