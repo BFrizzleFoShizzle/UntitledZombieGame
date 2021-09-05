@@ -5,10 +5,12 @@ extends KinematicBody
 # camera and its orientation.
 
 
-onready var camera: CameraRig = $CameraRig
+#onready var camera: CameraRig = $CameraRig
 onready var skin: Mannequiny = $Mannequiny
 onready var state_machine: StateMachine = $StateMachine
+onready var target:Spatial = $Target
+onready var gun:Spatial = $Target/Hand
 
-
-func _get_configuration_warning() -> String:
-	return "Missing camera node" if not camera else ""
+#
+#func _get_configuration_warning() -> String:
+#	return "Missing camera node" if not camera else ""

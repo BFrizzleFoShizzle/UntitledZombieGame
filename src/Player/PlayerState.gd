@@ -6,9 +6,13 @@ class_name PlayerState
 
 var player: Player
 var skin: Mannequiny
+var target: Spatial
+var gun: Spatial
 
 
 func _ready() -> void:
 	yield(owner, "ready")
 	player = owner
 	skin = owner.skin
+	target = owner.target
+	gun = owner.gun

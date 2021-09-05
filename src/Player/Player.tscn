@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://src/Player/Player.gd" type="Script" id=1]
 [ext_resource path="res://src/Player/Mannequiny.tscn" type="PackedScene" id=2]
@@ -7,7 +7,7 @@
 [ext_resource path="res://src/Player/States/Idle.gd" type="Script" id=5]
 [ext_resource path="res://src/Player/States/Air.gd" type="Script" id=6]
 [ext_resource path="res://src/Player/States/Run.gd" type="Script" id=7]
-[ext_resource path="res://src/Player/Camera/CameraRig.tscn" type="PackedScene" id=8]
+[ext_resource path="res://src/Player/ik_init.gd" type="Script" id=8]
 
 [sub_resource type="AnimationNodeStateMachinePlayback" id=1]
 
@@ -15,11 +15,25 @@
 radius = 0.25
 height = 1.25
 
+[sub_resource type="CubeMesh" id=3]
+size = Vector3( 0.04, 0.15, 0.04 )
+
+[sub_resource type="CubeMesh" id=4]
+size = Vector3( 0.04, 0.04, 0.12 )
+
 [node name="Player" type="KinematicBody"]
 script = ExtResource( 1 )
 
 [node name="Mannequiny" parent="." instance=ExtResource( 2 )]
 transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0.222992 )
+
+[node name="SkeletonIK" type="SkeletonIK" parent="Mannequiny/root/Skeleton" index="1"]
+process_priority = 1
+root_bone = "upperarmr"
+tip_bone = "handr"
+use_magnet = true
+script = ExtResource( 8 )
+targetNodePath = NodePath("../../../../Target/Hand")
 
 [node name="AnimationTree" parent="Mannequiny" index="2"]
 parameters/playback = SubResource( 1 )
@@ -45,7 +59,23 @@ script = ExtResource( 6 )
 [node name="Run" type="Node" parent="StateMachine/Move"]
 script = ExtResource( 7 )
 
-[node name="CameraRig" parent="." instance=ExtResource( 8 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.38644, 0 )
+[node name="Target" type="Spatial" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.5 )
+
+[node name="Hand" type="Spatial" parent="Target"]
+transform = Transform( 1.91069e-15, -4.37114e-08, 1, -1, -4.37114e-08, 0, 4.37114e-08, -1, -4.37114e-08, 0.2, 1.3, 0 )
+
+[node name="Gun" type="Spatial" parent="Target/Hand"]
+transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 0, 0 )
+
+[node name="Barrel" type="MeshInstance" parent="Target/Hand/Gun"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.075, 0.08 )
+mesh = SubResource( 3 )
+material/0 = null
+
+[node name="Handle" type="MeshInstance" parent="Target/Hand/Gun"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.04 )
+mesh = SubResource( 4 )
+material/0 = null
 
 [editable path="Mannequiny"]
