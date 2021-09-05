@@ -55,4 +55,5 @@ func _process(delta):
 func take_damage(damage):
 	health = max(0.0, health-damage)
 	if health == 0.0:
+		world.addEnemyDeath()
 		queue_free()
