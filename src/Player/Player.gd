@@ -15,6 +15,7 @@ var _gun_stats = [
 	GunState.GunStats.new(
 		preload("res://Gun1.tscn"),
 		"Pistol", # name
+		preload("res://PlayerGunSound.tscn"), # gun sound
 		25.0, # damage
 		200.0, # knockback
 		1.0, # reloadTime
@@ -25,6 +26,7 @@ var _gun_stats = [
 	GunState.GunStats.new(
 		preload("res://Gun3.tscn"),
 		"Sawn-off", # name
+		preload("res://PlayerGunSound2.tscn"), # gun sound
 		10.0, # damage
 		50.0, # knockback
 		1.0, # reloadTime
@@ -36,6 +38,7 @@ var _gun_stats = [
 	GunState.GunStats.new(
 		preload("res://Gun2.tscn"),
 		"Uzi", # name
+		preload("res://PlayerGunSound.tscn"), # gun sound
 		15.0, # damage
 		150.0, # knockback
 		1.0, # reloadTime
@@ -53,7 +56,6 @@ var _gunState:GunState = GunState.new(_gun_stats[_gun])
 
 const Enemy = preload("res://Enemy.gd")
 const Casing = preload("res://Casing.tscn")
-const GunSound = preload("res://PlayerGunSound.tscn")
 onready var rayDrawer = get_node("../RayDraw3D")
 var casingSpawn: Spatial
 var bulletSpawn: Spatial
@@ -179,7 +181,7 @@ func change_gun(gun:int):
 	_updateGunRefs()
 
 func play_gunshot():
-	var gunSound = GunSound.instance()
+	var gunSound = _gunState.gunStats.fireSound.instance()
 	add_child(gunSound)
 
 func getDamage():

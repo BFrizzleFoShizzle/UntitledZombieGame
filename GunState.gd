@@ -9,6 +9,7 @@ enum Gun {
 class GunStats:
 	var factory
 	var name: String
+	var fireSound
 	var damage: float
 	var attackKnockback: float
 	var fireInterval: float
@@ -17,10 +18,11 @@ class GunStats:
 	var shots: int
 	var magazineCount: int
 	var spread: float
-	func _init(factory, name:String, damage: float, attackKnockback: float, reloadTime: float, 
+	func _init(factory, name:String, fireSound, damage: float, attackKnockback: float, reloadTime: float, 
 			magazineCount: int, spread: float, shots: int = 1, automatic: bool = false, fireInterval: float = 0.01):
 		self.factory = factory
 		self.name = name
+		self.fireSound = fireSound
 		self.damage = damage
 		self.attackKnockback = attackKnockback
 		self.fireInterval = fireInterval

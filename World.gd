@@ -81,10 +81,11 @@ func openWeaponSelect():
 	weaponSelectMessageLabel.text = "Select your weapon."
 	if playerProgress.unlockNextGun():
 		var newGunIdx = playerProgress.getNextGunUnlock()
-		var gunName = $GameWorld/Player._gun_stats[newGunIdx].name
-		weaponSelectMessageLabel.text = "New weapon unlocked: " + $GameWorld/Player._gun_stats[newGunIdx].name
-		weaponSelectButtons[newGunIdx].text = gunName
-		weaponSelectButtons[newGunIdx].disabled = false
+		if newGunIdx < $GameWorld/Player._gun_stats.size():
+			var gunName = $GameWorld/Player._gun_stats[newGunIdx].name
+			weaponSelectMessageLabel.text = "New weapon unlocked: " + $GameWorld/Player._gun_stats[newGunIdx].name
+			weaponSelectButtons[newGunIdx].text = gunName
+			weaponSelectButtons[newGunIdx].disabled = false
 		
 	$LevelEndUI.visible = false
 	$WeaponSelectUI.visible = true
