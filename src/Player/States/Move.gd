@@ -17,6 +17,9 @@ var velocity: = Vector3.ZERO
 
 var ray_target = null
 
+# used for automatic weapons
+var shooting = false
+
 #func unhandled_input(event: InputEvent) -> void:
 #	if event.is_action_pressed("jump"):
 #		_state_machine.transition_to("Move/Air", { velocity = velocity, jump_impulse = jump_impulse })
@@ -33,39 +36,50 @@ func _input(event):
 			ray_target = pixelResult.position
 			
 			if event is InputEventMouseButton && event.button_index  == 1 && event.pressed == true:
-				# gunshot
-				player.play_gunshot()
-				player.muzzleFlashLight.flash()
-				
-				var shotOrigin = player.bulletSpawn.global_transform.origin
-				var shotDir = (ray_target - shotOrigin)
-				shotDir = Vector3(shotDir.x, 0.0, shotDir.z).normalized()
-				
-				# Create casing
-				var casing = player.Casing.instance()
-				get_node("/root/World/GameWorld").add_child(casing)
-				casing.global_transform = player.casingSpawn.global_transform
-				var casingMoveDir = (shotDir.cross(Vector3(0.0,1.0,0.0)) + Vector3(0.0,0.2,0.0))
-				casingMoveDir += Vector3(0.0,1.0,0.0) * rand_range(-0.1, 0.1)
-				casingMoveDir += shotDir * rand_range(-0.1, 0.1)
-				casingMoveDir = casingMoveDir.normalized()
-				var forceOrigin = Vector3(rand_range(-0.1,0.1), rand_range(-0.1,0.1), rand_range(-0.1,0.1))
-				casing.add_force(rand_range(player.shellEjectForceMin, player.shellEjectForceMax) * casingMoveDir, forceOrigin)
-				
-				
-				var shotEnd = shotOrigin + shotDir*20.0
-				var result = player.get_world().direct_space_state.intersect_ray(shotOrigin, shotEnd, [self])
-				if result:
-					player.rayDrawer.queue_ray(shotOrigin, result.position)
-					if result.collider is player.Enemy:
-						#print("Enemy hit!")
-						result.collider.take_damage(player.damage)
-						# knockback
-						#result.collider.add_force(Vector3(1.0, 0.0, 0.0) * attackKnockback, Vector3(0.0, 0.0, 0.0))
-						result.collider.add_force(shotDir.normalized() * player.attackKnockback, Vector3(0.0, 0.0, 0.0))
-				else:
-					# Miss
-					player.rayDrawer.queue_ray(shotOrigin, shotEnd)
+				if player.canAttack():
+					shooting = true
+			
+			if event is InputEventMouseButton && event.button_index  == 1 && event.pressed == false:
+				shooting = false
+	
+	if shooting && player.canAttack():
+		player.shoot()
+		
+		if(!player.isAutomatic()):
+			shooting = false
+		
+		# gunshot
+		player.play_gunshot()
+		player.muzzleFlashLight.flash()
+		
+		var shotOrigin = player.bulletSpawn.global_transform.origin
+		var shotDir = (ray_target - shotOrigin)
+		shotDir = Vector3(shotDir.x, 0.0, shotDir.z).normalized()
+		
+		# Create casing
+		var casing = player.Casing.instance()
+		get_node("/root/World/GameWorld").add_child(casing)
+		casing.global_transform = player.casingSpawn.global_transform
+		var casingMoveDir = (shotDir.cross(Vector3(0.0,1.0,0.0)) + Vector3(0.0,0.2,0.0))
+		casingMoveDir += Vector3(0.0,1.0,0.0) * rand_range(-0.1, 0.1)
+		casingMoveDir += shotDir * rand_range(-0.1, 0.1)
+		casingMoveDir = casingMoveDir.normalized()
+		var forceOrigin = Vector3(rand_range(-0.1,0.1), rand_range(-0.1,0.1), rand_range(-0.1,0.1))
+		casing.add_force(rand_range(player.shellEjectForceMin, player.shellEjectForceMax) * casingMoveDir, forceOrigin)
+		
+		var shotEnd = shotOrigin + shotDir*20.0
+		var result = player.get_world().direct_space_state.intersect_ray(shotOrigin, shotEnd, [self])
+		if result:
+			player.rayDrawer.queue_ray(shotOrigin, result.position)
+			if result.collider is player.Enemy:
+				#print("Enemy hit!")
+				result.collider.take_damage(player.getDamage())
+				# knockback
+				#result.collider.add_force(Vector3(1.0, 0.0, 0.0) * attackKnockback, Vector3(0.0, 0.0, 0.0))
+				result.collider.add_force(shotDir.normalized() * player.getKnockback(), Vector3(0.0, 0.0, 0.0))
+		else:
+			# Miss
+			player.rayDrawer.queue_ray(shotOrigin, shotEnd)
 
 func physics_process(delta: float) -> void:
 	var input_direction: = get_input_direction()

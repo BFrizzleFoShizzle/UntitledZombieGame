@@ -71,6 +71,9 @@ func startNextLevel():
 	wallHealth = min(maxWallHealth, wallHealth)
 	$GameUI/HBoxContainer/HealthText.text = str(wallHealth)
 	
+	if playerProgress.unlockNextGun():
+		$GameWorld/Player.change_gun(Player.Gun.UZI)
+	
 	# TODO search + rest
 	playerProgress.endDay()
 	totalKills = 0

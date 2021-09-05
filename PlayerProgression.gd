@@ -57,6 +57,10 @@ func getAmountRepaired():
 func getRelaxScore():
 	return hoursRelax * 50.0
 
+func unlockNextGun():
+	# TODO
+	return hoursSearch > 0
+
 func endDay():
 	day += 1
 	
